@@ -1,3 +1,3 @@
 # BOJ
-Baeckjoon Online Judge
+Baekjoon Online Judge
 www.acmicpc.net
