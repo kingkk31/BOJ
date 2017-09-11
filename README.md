@@ -1,3 +1,4 @@
 # BOJ
-User name : kingkk31\nBaekjoon Online Judge
-www.acmicpc.net
+Baekjoon Online Judge<br/>
+User name : kingkk31 (www.acmicpc.net/user/kingkk31)
+
