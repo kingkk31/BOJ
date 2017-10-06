@@ -3,7 +3,7 @@ using namespace std;
 
 int main(void)
 {
-    int n;
+    unsigned long long n;
     cin>>n;
     
     if(n%2 == 0)

@@ -1,9 +1,26 @@
 #include <iostream>
-#include <string.h>
-#include <algorithm>
-#include <vector>
+#include <stdio.h>
+#include <stdlib.h>
 #include <queue>
+#include <vector>
+#include <stack>
+#include <set>
+#include <map>
+#include <list>
+#include <string>
+#include <string.h>
+#include <math.h>
+#include <algorithm>
+#include <malloc.h>
+#include <functional>
+#include <time.h>
+#include <cctype>
+#include <iterator>
+#include <sstream>
+#pragma warning(disable:4996)
 using namespace std;
+
+#define INF 987654321
 
 typedef struct edge {
 	int v, c, d;
@@ -13,50 +30,41 @@ typedef struct edge {
 
 typedef struct EdgeCompare {
 	bool operator()(const edge& lhs, const edge& rhs) const {
-		return lhs.d > rhs.d;
+		if (lhs.d > rhs.d)
+			return true;
+		else if (lhs.d == rhs.d && lhs.c > rhs.c)
+			return true;
+		return false;
 	}
 };
 
-int cache[100][10005];
-const int INF = 987654321;
+int n, m, k, result, cache[100][10005];
 vector<vector<edge> > graph;
-vector<bool> visited;
 
-int n, m, k, result;
-
-void dijstra() 
+void dijstra()
 {
 	priority_queue<edge, vector<edge>, EdgeCompare > q;
 	for (int i = 0; i < graph[0].size(); i++)
 		q.push(graph[0][i]);
-	
+
 	while (!q.empty())
 	{
 		int v, c, d;
 		v = q.top().v;
 		c = q.top().c;
 		d = q.top().d;
-		
 		q.pop();
-	
-		if (c > m)
-			continue;
-		
-		if (v == n - 1)
-		{
-			result = min(result, d);
-			continue;
-		}
 
-		int &compare = cache[v][c];
-		compare = d;
+		if (cache[v][c] < d) continue;
+		cache[v][c] = d;
 
-		for (int i = 0; i < graph[v].size(); i++) 
+		for (int i = 0; i < graph[v].size(); i++)
 		{
-			if (cache[v][graph[v][i].c + c] == -1 || d + graph[v][i].d <= cache[v][graph[v][i].c + c])
+			int nV = graph[v][i].v, nC = graph[v][i].c, nD = graph[v][i].d;
+			if (c + nC <= m && cache[nV][c + nC] > d + nD)
 			{
-				q.push(edge(graph[v][i].v, graph[v][i].c + c, graph[v][i].d + d));
-				cache[v][graph[v][i].c + c] = graph[v][i].d + d;
+				q.push(edge(nV, c + nC, d + nD));
+				cache[nV][c + nC] = d + nD;
 			}
 		}
 	}
@@ -64,29 +72,31 @@ void dijstra()
 
 int main(void)
 {
-	int t; 
+	int t;
 	cin >> t;
 
-	for (int z = 0; z < t;z++)
+	for (int z = 0; z < t; z++)
 	{
 		cin >> n >> m >> k;
 		result = INF;
-		
+
 		graph.clear();
 		graph.assign(n, vector<edge>());
-		visited = vector<bool>(n, false);
-		memset(cache, -1, sizeof(cache));
+		for (int i = 0; i < 100; i++)
+			for (int j = 0; j < 10005; j++)
+				cache[i][j] = INF;
 
-		for (int i = 0; i < k; i++) 
+		for (int i = 0; i < k; i++)
 		{
 			int u, v, c, d;
 			cin >> u >> v >> c >> d;
-			u--, v--;
-
-			graph[u].push_back(edge(v, c, d));
+			graph[u - 1].push_back(edge(v - 1, c, d));
 		}
 
 		dijstra();
+
+		for (int i = 0; i <= m; i++)
+			result = min(result, cache[n - 1][i]);
 
 		if (result == INF)
 			cout << "Poor KCM" << endl;
