@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
 int main(void)
@@ -6,22 +7,29 @@ int main(void)
 	int n;
 	cin >> n;
 
-	int cnt = 0;
-
-	int a = 1;
+	int cnt2 = 0, cnt5 = 0;
 
 	for (int i = 1; i <= n; i++)
 	{
-		a *= i;
-		while (a % 10 == 0)
+		int t = i, c2 = 0, c5 = 0;
+
+		while (t % 5 == 0)
 		{
-			cnt++;
-			a = a / 10;
+			c5++;
+			t /= 5;
 		}
-		a = a % 10;
+
+		while (t % 2 == 0)
+		{
+			c2++;
+			t /= 2;
+		}
+
+		cnt2 += c2;
+		cnt5 += c5;
 	}
 
-	cout << cnt << endl;
+	cout << min(cnt2, cnt5) << endl;
 
 	return 0;
 }
