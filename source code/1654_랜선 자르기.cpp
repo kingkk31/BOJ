@@ -26,7 +26,7 @@ vector<long long> vt;
 
 long long binarySearch()
 {
-	long long left = 0, right = m, mid, cnt, maxi = 0;
+	long long left = 0, right = 10000000000001, mid, cnt, maxi = 0;
 
 	while (left <= right)
 	{
@@ -52,15 +52,10 @@ int main(void)
 {
 	scanf("%lld %lld", &k, &n);
 	vt = vector<long long>(k);
-	scanf("%lld", &vt[0]);
-	m = vt[0];
-
-	for (int i = 1; i < k; i++)
-	{
+	
+	for (int i = 0; i < k; i++)
 		scanf("%lld", &vt[i]);
-		m = max(m, vt[i]);
-	}
-
+	
 	cout << binarySearch() << endl;
 
 	return 0;
